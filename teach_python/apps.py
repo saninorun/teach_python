@@ -9,7 +9,6 @@ from database.engine import create_db, drop_db, session_maker
 from handlers.admin_private import admin_router
 from handlers.user_grups import user_group_router
 from handlers.user_private import user_private_router
-from common.list_cmds import private
 from middlewares.db import DataBaseSession
 
 load_dotenv()
@@ -28,7 +27,7 @@ dp.include_router(user_group_router)
 dp.include_router(admin_router)
 
 
-async def on_startup(bot):
+async def on_startup(bot: Bot):
     run_param = False
     if run_param:
         await drop_db()
@@ -46,9 +45,10 @@ async def main():
     await bot.delete_webhook(
         drop_pending_updates=True
     )  # Удаляет все сообщения, которые были отправлены боту в момент когда он был не на связи с телеграм
-    await bot.set_my_commands(
-        commands=private, scope=BotCommandScopeAllPrivateChats()
-    )  # Создание меню для бота
+    # await bot.delete_my_commands(scope=BotCommandScopeAllPrivateChats())
+    # await bot.set_my_commands(
+    #     commands=private, scope=BotCommandScopeAllPrivateChats()
+    # )  # Создание меню для бота
 
     await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
 

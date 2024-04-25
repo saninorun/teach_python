@@ -22,7 +22,7 @@ admin_router.message.filter(ChatTypeFilter(["private"]), IsAdmin())
 
 ADMIN_KB = get_keyboard(
     "Добавить товар",
-    "Я так, просто, посмотреть зашел...",
+    # "Я так, просто, посмотреть зашел...",
     placeholder="Выберите действие",
     sizes=(2,),
 )
