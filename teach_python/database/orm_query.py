@@ -38,6 +38,7 @@ class Paginator:
         )
 
 
+#########################__Работа с банерами__##########################
 async def orm_add_banner_description(session: AsyncSession, data: dict):
     query = select(Banner)
     result = await session.execute(query)
@@ -77,17 +78,27 @@ async def orm_get_categories(session: AsyncSession):
     return result.scalars().all()
 
 
-async def orm_create_categories(session: AsyncSession, categoryes: list):
+async def orm_create_categories(session: AsyncSession, categories: list):
     query = select(Category)
     result = await session.execute(query)
     if result.first():
         return
-    session.add_all([Category(name=name) for name in categoryes])
+    session.add_all([Category(name=name) for name in categories])
     await session.commit()
 
 
 ######################## Админка ##################################
 async def orm_add_product(session: AsyncSession, data: dict):
+    # obj = Product(
+    #     name=data["name"],
+    #     description=data["description"],
+    #     price=float(data["price"]),
+    #     image=data["image"],
+    #     category_id=int(data["category"]),
+    # )
+    # session.add(obj)
+    # await session.commit()
+
     session.add(Product(**data))
     await session.commit()
 
@@ -104,7 +115,7 @@ async def orm_get_product(session: AsyncSession, product_id: int):
     return result.scalar()
 
 
-async def orm_update_product(*, session: AsyncSession, product_id: int, data):
+async def orm_update_product(session: AsyncSession, product_id: int, data):
     query = update(Product).where(Product.id == product_id).values(**data)
     result = await session.execute(query)
     await session.commit()
